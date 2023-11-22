@@ -863,12 +863,23 @@ def end_transation_one_futures(account,futures_code,amount1,d,Close):#平一只�
                 
 '''               
 设amount1=800 all_amount=800 same_day_open_amount=-200 not_same_day_open_amount=1000 不进入特殊平仓
+非今天买入1000仓，今天已经卖200仓，现在再卖800仓
+
+
 
 设amount1=400 all_amount=-400 same_day_open_amount=-1400 not_same_day_open_amount=1000 不进入特殊平仓
+非今天买入1000仓，今天已经卖出1400仓，现在再买入400仓，这里应该进入特殊平仓的，有错误
 
-设amount1=1000 all_amount=-1200 same_day_open_amount=-200 not_same_day_open_amount=-1000 进入特殊平仓
+
+
+设amount1=1050 all_amount=-1200 same_day_open_amount=-200 not_same_day_open_amount=-1000 进入特殊平仓
+非今天卖出1000仓，今天已经卖出200仓，现在再买入1050仓
+
+
 
 设amount1=800 all_amount=-800 same_day_open_amount=200 not_same_day_open_amount=-1000 不进入特殊平仓
+非今天卖出1000仓，今天已经买入200仓，现在再买入800仓
+
 
 假设两对期货对 一对做多2000 一对做空-1000 总1000 要平仓2000 amount1>all amount
 
