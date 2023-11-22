@@ -869,7 +869,7 @@ def end_transation_one_futures(account,futures_code,amount1,d,Close):#平一只�
 
 设amount1=400 all_amount=-400 same_day_open_amount=-1400 not_same_day_open_amount=1000 不进入特殊平仓
 非今天买入1000仓，今天已经卖出1400仓，现在再买入400仓，这里应该进入特殊平仓的，有错误
-
+但是在单对期货对的时候没有问题，因为平仓逻辑应该把not_same_day_open_amount平仓，今天最多只能已经卖1000仓
 
 
 设amount1=1050 all_amount=-1200 same_day_open_amount=-200 not_same_day_open_amount=-1000 进入特殊平仓
