@@ -1,3 +1,5 @@
+
+
 #获取某分钟的收盘价
 def get_price(stock_code,time,Close):
     return Close.loc[time,stock_code]
@@ -6,7 +8,7 @@ def get_price(stock_code,time,Close):
 def get_today_open_price(stock_code,time,Open):
     return Open.loc[time.split(" ")[0]+' 09:31:00',stock_code]
 
-#买入
+#股票买入
 def order_buy(account,stock_code,time,amount,fee,huadian,Close):
 
     open_time=time.split(" ")[0]+" 09:31:00"
@@ -41,7 +43,7 @@ def order_buy(account,stock_code,time,amount,fee,huadian,Close):
         else:
             return "no money don't touch! \n Aoocunt coin:"+str(account.get_coin())
         
-#卖出
+#股票卖出
 def order_sell(account,stock_code,time,fee,tax,sell_amount,huadian,Close):#fee 卖出手续费 tax印花税 amount:卖多少股
 
     open_time=time.split(" ")[0]+" 09:31:00"
@@ -64,7 +66,7 @@ def order_sell(account,stock_code,time,fee,tax,sell_amount,huadian,Close):#fee �
         else:
             return "no stock to sell! \n "+stock_code+":"+str(account.stock[stock_code])
         
-#融券
+#股票融券
 def borrow_stock(account,stock_code,amount,time,Close):#一借出就立马卖掉
     open_time=time.split(" ")[0]+" 09:31:00"
     
@@ -98,7 +100,7 @@ def borrow_stock(account,stock_code,amount,time,Close):#一借出就立马卖掉
         print("融券成功")
         return "融券成功"
     
-#还券逻辑
+#股票还券逻辑
 def return_logic(account,stock_code,amount,td,time,Close):#还每个时刻欠的股
     credit_info=account.get_credit_stock(stock_code,td)
     
@@ -193,7 +195,7 @@ def return_logic(account,stock_code,amount,td,time,Close):#还每个时刻欠的
         account.update_coin(account.get_coin()-borrow_coin*0.0835*borrow_days/360)
         return amount
     
-#还券
+#股票还券
 def return_stock(account,stock_code,amount,time,Close):
     borrow_time_list=[]
     for d in account.credit_stock[stock_code].keys():
@@ -206,11 +208,11 @@ def return_stock(account,stock_code,amount,time,Close):
         rest_need_return_amount=return_logic(account,stock_code,amount,td,time,Close)
         amount=amount-rest_need_return_amount
       
-#收益
+#股票收益
 def earn_coin(start_coin,end_coin):
     return start_coin-end_coin
 
-#收益率
+#股票收益率
 def earn_rate(start_coin,end_coin):
     return (end_coin-start_coin)/start_coin
 
@@ -280,7 +282,7 @@ def get_total_value_every_day(cyf,d,fee,tax,Close):
     print("股票价值",stock_value*(1-fee-tax))
     return total_value
 
-#止损
+#股票止损
 def stop_lost(d,account,Close,Open):
     universe=list(Close.columns)[0:len(Close.columns)]
     for jjj in range(len(universe)):#对于每一只股票
@@ -303,7 +305,7 @@ import numpy as np
 
 
 
-#计算昨天结算价
+#期货计算昨天结算价
 def get_futures_ysterday_jie_suan_price(futures_code,time,Close,Volume):
     bussiness=["IF9999.CCFX","TF9999.CCFX","T9999.CCFX","IC9999.CCFX","IH9999.CCFX","TS9999.CCFX","IM9999.CCFX","TL9999.CCFX"]
     #按照黄金开盘收盘时间生成的数据，一天555条数据
@@ -338,7 +340,7 @@ def get_futures_ysterday_jie_suan_price(futures_code,time,Close,Volume):
     
    
 
-#买入
+#期货买入
 def order_buy_futures(account,futures_code,time,amount,huadian,Close,Volume):
     fee_dict={'AG': 0.50/100/100,'AL': 3/100/100,'AU': 10/100/100,'BU': 1.00/100/100,'CU': 0.50/100/100,'FU': 0.10/100/100,
               'HC': 1.00/100/100,'NI': 3/100/100,'PB': 0.40/100/100,'RB': 1.00/100/100,'RU': 3.00/100/100,'SN': 3/100/100,
@@ -472,7 +474,7 @@ def get_futures_amount(account,futures_code):
     return total_amount
 
 
-#卖出
+#期货卖出
 def order_sell_futures(account,futures_code,time,sell_amount,huadian,Close,Volume):#fee 卖出手续费 tax印花税 amount:卖多少股
     fee_dict={'AG': 0.50/100/100,'AL': 3/100/100,'AU': 10/100/100,'BU': 1.00/100/100,'CU': 0.50/100/100,'FU': 0.10/100/100,
               'HC': 1.00/100/100,'NI': 3/100/100,'PB': 0.40/100/100,'RB': 1.00/100/100,'RU': 3.00/100/100,'SN': 3/100/100,
@@ -587,7 +589,7 @@ def order_sell_futures(account,futures_code,time,sell_amount,huadian,Close,Volum
             #return "no stock to sell! \n "+stock_code+":"+str(account.stock[stock_code])
             
             
-#特殊买入，平今仓
+#期货特殊买入，平今仓
 def within_day_order_buy_futures(account,futures_code,time,amount,huadian,Close,Volume):
     fee_dict={'CU': '1.00/100/100',
  'J': '1.40/100/100',
@@ -710,7 +712,7 @@ def within_day_order_buy_futures(account,futures_code,time,amount,huadian,Close,
             return "no money don't touch! \n Aoocunt coin:"+str(account.get_coin())
         
         
-#特殊卖出，平今仓
+#期货特殊卖出，平今仓
 def within_day_order_sell_futures(account,futures_code,time,sell_amount,huadian,Close,Volume):#fee 卖出手续费 tax印花税 amount:卖多少股
     fee_dict={'CU': '1.00/100/100',
  'J': '1.40/100/100',
@@ -864,7 +866,7 @@ def end_transation_one_futures(account,futures_code,amount1,d,Close):#平一只�
 
 设amount1=400 all_amount=-400 same_day_open_amount=-1400 not_same_day_open_amount=1000 不进入特殊平仓
 
-设amount1=1050 all_amount=-1200 same_day_open_amount=-200 not_same_day_open_amount=-1000 进入特殊平仓
+设amount1=1000 all_amount=-1200 same_day_open_amount=-200 not_same_day_open_amount=-1000 进入特殊平仓
 
 设amount1=800 all_amount=-800 same_day_open_amount=200 not_same_day_open_amount=-1000 不进入特殊平仓
 
@@ -1033,7 +1035,7 @@ def get_futures_ysterday_jie_suan_price(futures_code,time,Close,Volume):
   
 
 #生成统计套利的上下界
-def generate_up_down(d,l,i,k):
+def generate_up_down(d,l,i,k):#d为日期，l为从当前时间戳往前多少单位时间，i为单对期货对在所有期货对中的排序，k为开仓的阈值
     futures1=sta_pair[i][0]
     futures2=sta_pair[i][1]
     today_index=Close.index[d]
