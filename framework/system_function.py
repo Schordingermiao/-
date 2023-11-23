@@ -887,7 +887,7 @@ def end_transation_one_futures(account,futures_code,amount1,d,Close):#平一只�
 '''                
 
 
-#获取某个时刻的期货价格               
+#获取某个时刻的期货价格 
 def get_total_value_of_futures_in_a_moment(cyf,d,Close):
     fee_dict={'AG': 0.50/100/100,'AL': 3/100/100,'AU': 10/100/100,'BU': 1.00/100/100,'CU': 0.50/100/100,'FU': 0.10/100/100,
               'HC': 1.00/100/100,'NI': 3/100/100,'PB': 0.40/100/100,'RB': 1.00/100/100,'RU': 3.00/100/100,'SN': 3/100/100,
@@ -910,14 +910,16 @@ def get_total_value_of_futures_in_a_moment(cyf,d,Close):
     
   
             
-    for jjj in range(len(universe)):#对于每一只股票
-        if cyf.get_stock(universe[jjj])!=0:#股票数量不为0
+    for jjj in range(len(universe)):#对于每一只期货
+        if cyf.get_stock(universe[jjj])!=0:#期货数量不为0
             futures_type=universe[jjj].split(".")[0].replace("9999","")
-    
-            fee=fee_dict[futures_type]
+            if futures_type in fee_dict.keys():
+                fee=fee_dict[futures_type]
+            else:
+                fee=0
         
-            stock_value=stock_value+get_price(universe[jjj],d,Close)\
-            *cyf.get_stock(universe[jjj])*(1-fee)#当分钟股票开盘价*股票数量 
+            stock_value=stock_value+get_price(universe[jjj],d,Close)*cyf.get_stock(universe[jjj])-\
+            get_price(universe[jjj],d,Close)*abs(cyf.get_stock(universe[jjj]))*fee#当分钟股票开盘价*股票数量 
     total_value=end_coin+stock_value
 
     
